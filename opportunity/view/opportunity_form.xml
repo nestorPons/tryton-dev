@@ -1,0 +1,22 @@
+<form>
+    <label name="party"/>
+    <field name="party"/>
+    <label name="address"/>
+    <field name="address"/>
+    <label name="description"/>
+    <field name="description"/>
+    <label name="start_date"/>
+    <field name="start_date"/>
+    <label name="end_date"/>
+    <field name="end_date"/>
+    <label name="duration"/>
+    <field name="duration"/>
+    <label name="state"/>
+    <field name="state"/>
+    <group col="2" colspan="2" id="button">
+        <button name="lost" icon="tryton-cancel"/>
+        <button name="convert" icon="tryton-forward"/>
+    </group>
+    <separator name="comment" colspan="4"/>
+    <field name="comment" colspan="4"/>
+</form>

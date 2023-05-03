@@ -1,0 +1,45 @@
+<tryton>
+    <data>
+        <record model="ir.ui.view" id="opportunity_view_form">
+            <field name="model">training.opportunity</field>
+            <field name="type">form</field>
+            <field name="name">opportunity_form</field>
+        </record>
+
+        <record model="ir.ui.view" id="opportunity_view_list">
+            <field name="model">training.opportunity</field>
+            <field name="type">tree</field>
+            <field name="name">opportunity_list</field>
+        </record>
+        <record model="ir.model.button" id="opportunity_convert_button">
+            <field name="name">convert</field>
+            <field name="string">Convert</field>
+            <field name="model" search="[('model', '=', 'training.opportunity')]"/>
+        </record>
+
+        <record model="ir.model.button" id="opportunity_lost_button">
+            <field name="name">lost</field>
+            <field name="string">Lost</field>
+            <field name="model" search="[('model', '=', 'training.opportunity')]"/>
+        </record>
+
+        
+        <record model="ir.action.act_window" id="act_opportunity_form">
+            <field name="name">Opportunities</field>
+            <field name="res_model">training.opportunity</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_opportunity_form_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="opportunity_view_list"/>
+            <field name="act_window" ref="act_opportunity_form"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_opportunity_form_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="opportunity_view_form"/>
+            <field name="act_window" ref="act_opportunity_form"/>
+        </record>
+
+        <menuitem name="Opportunities" sequence="50" id="menu_opportunity"/>
+        <menuitem name="Opportunity" parent="menu_opportunity" action="act_opportunity_form" sequence="10" id="menu_opportunity_form"/>
+    </data>
+</tryton>
