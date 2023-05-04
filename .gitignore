@@ -1,5 +1,6 @@
 sao/node_modules
-
+sao/bower_components
+sao/package-lock.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
