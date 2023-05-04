@@ -5,25 +5,28 @@
             <field name="type">form</field>
             <field name="name">opportunity_form</field>
         </record>
-
         <record model="ir.ui.view" id="opportunity_view_list">
             <field name="model">training.opportunity</field>
             <field name="type">tree</field>
             <field name="name">opportunity_list</field>
         </record>
+
         <record model="ir.model.button" id="opportunity_convert_button">
             <field name="name">convert</field>
             <field name="string">Convert</field>
             <field name="model" search="[('model', '=', 'training.opportunity')]"/>
         </record>
-
         <record model="ir.model.button" id="opportunity_lost_button">
             <field name="name">lost</field>
             <field name="string">Lost</field>
             <field name="model" search="[('model', '=', 'training.opportunity')]"/>
         </record>
+        <record model="ir.model.button" id="opportunity_reset_button">
+            <field name="name">reset</field>
+            <field name="string">Reset</field>
+            <field name="model" search="[('model', '=', 'training.opportunity')]"/>
+        </record>
 
-        
         <record model="ir.action.act_window" id="act_opportunity_form">
             <field name="name">Opportunities</field>
             <field name="res_model">training.opportunity</field>

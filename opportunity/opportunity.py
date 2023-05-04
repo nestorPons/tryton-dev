@@ -9,27 +9,48 @@ class Opportunity(Workflow, ModelSQL, ModelView):
     __name__ = 'training.opportunity'
     _rec_name = 'description'
 
-    description = fields.Char("Description", required=True)
+    description = fields.Char("Description", required=True,
+                              states={
+                                  'readonly': Eval('state') != 'draft',
+                              })
     start_date = fields.Date(
         "Start Date", required=True,
+        states={
+            'readonly': Eval('state') != 'draft'
+        },
         domain=[
             If(Bool(Eval('end_date')),
                 ('start_date', '<=', Eval('end_date')),
                 ())])
     end_date = fields.Date(
         "End Date",
+        states={
+            'readonly': Eval('state') != 'draft',
+            'required': Eval('state').in_(['converted']),
+        },
         domain=[
             If(Bool(Eval('end_date')),
                 ('end_date', '>=', Eval('start_date')),
                 ())])
-    party = fields.Many2One('party.party', "Party", required=True)
-    comment = fields.Text("Comment")
+    party = fields.Many2One('party.party', "Party", required=True,
+                            states={
+                                'readonly': Eval('state') != 'draft',
+                            })
+    comment = fields.Text(
+        "Comment",
+        states={
+            'readonly': Eval('state') != 'draft',
+            'invisible': (
+                (Eval('state') != 'draft') & ~Eval('comment')),
+        })
     duration = fields.Function(fields.TimeDelta(
         "Duration"), 'on_change_with_duration')
     address = fields.Many2One('party.address', "Address",
                               domain=[
-                                  ('party', '=', Eval('party', -1)),
-                              ])
+                                  ('party', '=', Eval('party')),
+                              ], states={
+                                  'readonly': Eval('state') != 'draft',
+                              })
     state = fields.Selection([
         ('draft', "Draft"),
         ('converted', "Converted"),
@@ -43,10 +64,21 @@ class Opportunity(Workflow, ModelSQL, ModelView):
         cls._transitions.update({
             ('draft', 'converted'),
             ('draft', 'lost'),
+            ('lost', 'draft'),
+            ('converted', 'draft')
         })
         cls._buttons.update({
-            'convert': {},
-            'lost': {},
+            'convert': {
+                'invisible': Eval('state') != 'draft',
+                'depends': ['state'],
+            },
+            'lost': {
+                'invisible': Eval('state') != 'draft',
+                'depends': ['state'],
+            },
+            'reset': {
+                'depends': ['state']
+            }
         })
 
     @classmethod
@@ -67,11 +99,15 @@ class Opportunity(Workflow, ModelSQL, ModelView):
     @ModelView.button
     @Workflow.transition('lost')
     def lost(cls, opportunities):
-        pool = Pool()
-        Date = pool.get('ir.date')
         cls.write(opportunities, {
-            'duration': 0,
+            'end_date': None,
         })
+
+    @classmethod
+    @ModelView.button
+    @Workflow.transition('draft')
+    def reset(self, opportunities):
+        return self.default_state()
 
     @classmethod
     def default_start_date(cls):
