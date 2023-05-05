@@ -1,19 +1,25 @@
 # tryton-dev
 Template default job Tryton project
 
-> python -m venv venv
+`python -m venv venv`
 
-> source venv/bin/activate
+`source venv/bin/activate`
 
-> source .env.local
+`pip install --upgrade pip`
 
-> pip install --upgrade pip
+`pip install -r requirements.txt`
 
-> pip install -r requirements.txt
+`docker-compose up -d`
 
-> docker-compose up -d
+`cd sao`
 
-> trytond-admin -c trytond.conf -d trytondb --all -vv
+`npm install --legacy-peer-deps`
+
+`grunt dev`
+
+`source .env.local`
+
+`restart`
 
 ```
 "admin" email for "trytondb": admin
@@ -21,8 +27,13 @@ Template default job Tryton project
 "admin" password confirmation: admin
 ```
 
-> cd sao
+`trytond_import_currencies -c trytond.conf -d trytondb`
 
-> npm install --legacy-peer-deps
+`trytond_import_countries -c trytond.conf -d trytondb`
 
-> grunt dev
+`trytond_import_postal_codes -c trytond.conf -d trytondb es`
+
+`trytond`
+
+
+

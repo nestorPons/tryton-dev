@@ -7,29 +7,10 @@ services:
       POSTGRES_DB: trytondb
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
+
     ports:
       - "5432:5432"
-  #tryton:
-  #  image: tryton/tryton
-  #  ports:
-  #    - "8000:8000"
-  #  volumes:
-  #    - volume-data:/var/lib/trytond/db
-  #    - .:/var/lib/trytond
-  #  depends_on:
-  #    - db
-  #  restart: always
-  #pgadmin:
-  #  image: dpage/pgadmin4
-  #  environment:
-  #      PGADMIN_DEFAULT_EMAIL: root
-  #      PGADMIN_DEFAULT_PASSWORD: root
-  #      PGADMIN_LISTEN_PORT: 80
-  #  ports:
-  #      - 8080:80
-  #  volumes:
-  #      - volume-pgadmin:/var/lib/pgadmin
-  #  depends_on:
-  #      - db
+    volumes: 
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
