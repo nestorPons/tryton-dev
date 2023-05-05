@@ -53,8 +53,6 @@ MarkupSafe==2.1.2
 mercurial==6.4.2
 mt940==0.6.0
 ofxparse==0.21
-# Editable install with no version control (opportunity==6.8.0)
--e /home/admin/Projects/tryton/opportunity
 packaging==23.1
 passlib==1.7.4
 phonenumbers==8.13.11

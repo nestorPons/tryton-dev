@@ -2,13 +2,13 @@ version: "3.3"
 services:
   database:
     image: postgres
+    restart: always
     environment:
       POSTGRES_DB: trytondb
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     volumes:
-      - db:/var/lib/postgresql/data
-    restart: always
+      - ./pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   #tryton:
@@ -33,7 +33,3 @@ services:
   #      - volume-pgadmin:/var/lib/pgadmin
   #  depends_on:
   #      - db
-volumes:
-  db: {}
-  #volume-data: {}
-  #volume-pgadmin: {}
