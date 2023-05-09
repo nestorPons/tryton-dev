@@ -4844,6 +4844,7 @@ function eval_pyson(value) {
                 for (key in this.fields) {
                     this.remove(key, false);
                 }
+                //NOTODO
                 this._record_id = record_id;
             }
 
