@@ -1,0 +1,5 @@
+<form col="2">
+   <label string="Convert Opportunities?" id="convert_opportunities" colspan="2" xalign="0"/>
+   <label name="end_date"/>
+   <field name="end_date"/>
+</form>

@@ -1,0 +1,5 @@
+<tree>
+   <field name="month"/>
+   <field name="converted"/>
+   <field name="lost"/>
+</tree>

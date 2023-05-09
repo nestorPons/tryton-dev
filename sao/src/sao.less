@@ -430,7 +430,21 @@ img.icon {
     -moz-user-select: none;
     -webkit-user-select: none;
 }
-
+.btn-default(){
+    border: 1px solid;
+    width: 130px;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    
+}
+.modal-footer{
+    display: flex;
+    .btn{
+        .btn-default();
+    }
+}
 .treeview {
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -623,24 +637,32 @@ img.icon {
 
 .form {
     width: 100%;
-    .form-container, .form-hcontainer, .form-vcontainer {
-        display: inline-table;
-    }
-    table.form-container > tbody > tr > td {
-        padding: 2px;
-    }
-    table.form-hcontainer > tbody > tr > td {
-        padding-top: 0px;
-        padding-bottom: 0px;
-
-        > .btn {
-            margin-top: 2px;
-            margin-bottom: 2px;
+    height: 100%;
+    .form-container{
+        display: flex !important;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        height: max-content;
+        &>div>div{
+            display: flex;
+            flex-direction: column;
+            justify-content:space-around;
+            align-items: initial;
+            span{
+                width: max-content;
+            }
+        }
+        .form-text{
+            width: 100%;
+        }
+        .btn {
+            .btn-default();
         }
     }
-    table.form-vcontainer > tbody > tr > td {
-        padding-left: 0px;
-        padding-right: 0px;
+    input[type="checkbox"].input-sm{
+        height: 90%;
     }
     td.form-label {
         white-space: pre;
@@ -650,15 +672,15 @@ img.icon {
     .form-multiselection, .form-url, .form-email, .form-callto, .form-sip,
     .form-pyson {
         input, select {
-            min-width: 8ch;
+            min-width: 120px;
         }
     }
     .form-many2one, .form-one2one, .form-reference, form-binary {
         select {
-            min-width: 8ch;
+            min-width: 120px;
         }
         input {
-            min-width: 12ch;
+            min-width: 120px;
         }
     }
 
@@ -755,18 +777,11 @@ img.icon {
             object-position: center top;
             width: 100%;
             height: 75vh;
-            @media screen and (max-width: @screen-sm-max) {
-                height: 50vh;
-            }
-            @media screen and (max-width: @screen-xs-max) {
-                height: 25vh;
-            }
         }
     }
     label {
         font-weight: normal;
         display: inline;
-        padding: 0 5px;
         &.required {
             font-weight: bold;
         }

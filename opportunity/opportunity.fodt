@@ -1,0 +1,11 @@
+﻿<for each="opportunity in records">
+Opportunity: <opportunity.rec_name>
+Party: <opportunity.party.rec_name>
+Start Date: <format_date(opportunity.start_date) if opportunity.start_date else ''>
+End Date: <format_date(opportunity.end_date) if opportunity.end_date else ''>
+
+Comment:
+<for each="line in (opportunity.comment or '').splitlines()">
+<line>
+</for>
+</for>

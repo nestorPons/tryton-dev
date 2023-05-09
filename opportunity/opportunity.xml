@@ -44,5 +44,55 @@
 
         <menuitem name="Opportunities" sequence="50" id="menu_opportunity"/>
         <menuitem name="Opportunity" parent="menu_opportunity" action="act_opportunity_form" sequence="10" id="menu_opportunity_form"/>
+
+        <record model="ir.ui.view" id="opportunity_convert_start_view_form">
+            <field name="model">training.opportunity.convert.start</field>
+            <field name="type">form</field>
+            <field name="name">opportunity_convert_start_form</field>
+        </record>
+
+        <record model="ir.action.wizard" id="act_convert_opportunities">
+            <field name="name">Convert Opportunities</field>
+            <field name="wiz_name">training.opportunity.convert</field>
+            <field name="model">training.opportunity</field>
+        </record>
+        <record model="ir.action.keyword" id="act_convert_opportunities_keyword">
+            <field name="keyword">form_action</field>
+            <field name="model">training.opportunity,-1</field>
+            <field name="action" ref="act_convert_opportunities"/>
+        </record>
+
+        <!--REPORT-->
+        <record model="ir.action.report" id="report_opportunity">
+            <field name="name">Opportunity</field>
+            <field name="report_name">training.opportunity.report</field>
+            <field name="model">training.opportunity</field>
+            <field name="report">opportunity/opportunity.fodt</field>
+            <field name="template_extension">odt</field>
+        </record>
+        <record model="ir.action.keyword" id="report_opportunity_keyword">
+            <field name="keyword">form_print</field>
+            <field name="model">training.opportunity,-1</field>
+            <field name="action" ref="report_opportunity"/>
+        </record>
+
+        <!--CONSULTA-->
+        <record model="ir.ui.view" id="opportunity_monthly_view_list">
+            <field name="model">training.opportunity.monthly</field>
+            <field name="type">tree</field>
+            <field name="name">opportunity_monthly_list</field>
+        </record>
+
+        <record model="ir.action.act_window" id="act_opportunity_monthly_form">
+            <field name="name">Monthly Opportunities</field>
+            <field name="res_model">training.opportunity.monthly</field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_opportunity_monthly_form_view">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="opportunity_monthly_view_list"/>
+            <field name="act_window" ref="act_opportunity_monthly_form"/>
+        </record>
+
+        <menuitem parent="menu_opportunity" action="act_opportunity_monthly_form" sequence="50" id="menu_opportunity_monthly_form"/>
     </data>
 </tryton>

@@ -1,8 +1,13 @@
-from trytond.model import ModelSQL, ModelView, fields, Workflow
 from trytond.pool import Pool
+from trytond.model import ModelSQL, ModelView, fields, Workflow
+from trytond.wizard import Wizard, StateView, StateTransition, Button
+from trytond.report import Report
 import datetime as dt
 from trytond.pyson import If, Bool, Eval
 
+from sql import Literal
+from sql.aggregate import Count, Min
+from sql.functions import CurrentTimestamp, DateTrunc
 
 class Opportunity(Workflow, ModelSQL, ModelView):
     "Opportunity"
@@ -88,11 +93,11 @@ class Opportunity(Workflow, ModelSQL, ModelView):
     @classmethod
     @ModelView.button
     @Workflow.transition('converted')
-    def convert(cls, opportunities):
+    def convert(cls, opportunities, end_date=None):
         pool = Pool()
         Date = pool.get('ir.date')
         cls.write(opportunities, {
-            'end_date': Date.today(),
+            'end_date': end_date or Date.today(),
         })
 
     @classmethod
@@ -138,3 +143,61 @@ class Opportunity(Workflow, ModelSQL, ModelView):
         if self.start_date and self.end_date:
             return self.end_date - self.start_date
         return None
+
+class ConvertStart(ModelView):
+    "Convert Opportunities"
+    __name__ = 'training.opportunity.convert.start'
+
+    end_date = fields.Date("End Date", required=True)
+
+class Convert(Wizard):
+    "Convert Opportunities"
+    __name__ = 'training.opportunity.convert'
+
+    start = StateView(
+        'training.opportunity.convert.start',
+        'opportunity.opportunity_convert_start_view_form', [
+            Button("Cancel", 'end', 'tryton-cancel'),
+            Button("Convert", 'convert', 'tryton-ok', default=True),
+            ])
+    convert = StateTransition()
+
+    def transition_convert(self):
+        self.model.convert(self.records, self.start.end_date)
+        return 'end'
+
+class OpportunityReport(Report):
+    __name__ = 'training.opportunity.report'
+
+class OpportunityMonthly(ModelSQL, ModelView):
+    "Opportunity Monthly"
+    __name__ = 'training.opportunity.monthly'
+
+    month = fields.Date("Month")
+    converted = fields.Integer("Converted")
+    lost = fields.Integer("Lost")
+
+    @classmethod
+    def table_query(cls):
+        pool = Pool()
+        Opportunity = pool.get('training.opportunity')
+        opportunity = Opportunity.__table__()
+
+        month = cls.month.sql_cast(
+            DateTrunc('month', opportunity.end_date))
+        query = opportunity.select(
+            Literal(0).as_('create_uid'),
+            CurrentTimestamp().as_('create_date'),
+            Literal(None).as_('write_uid'),
+            Literal(None).as_('write_date'),
+            Min(opportunity.id).as_('id'),
+            month.as_('month'),
+            Count(
+                Literal('*'),
+                filter_=opportunity.state == 'converted').as_('converted'),
+            Count(
+                Literal('*'),
+                filter_=opportunity.state == 'lost').as_('lost'),
+            where=opportunity.state.in_(['converted', 'lost']),
+            group_by=[month])
+        return query
