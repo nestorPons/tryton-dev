@@ -491,7 +491,7 @@ function eval_pyson(value) {
             } else if (this.col == 1) {
                 this.el.addClass('form-vcontainer');
             }
-            this.add_row();
+
         },
         add_row: function() {
             // Obsolet! don't use tag table for show desing
@@ -505,64 +505,14 @@ function eval_pyson(value) {
             return this.body;
         },
         add: function(widget, attributes) {
-            let colspan = attributes.colspan;
-            if (colspan === undefined) colspan = 1;
-            let xfill = attributes.xfill;
-            if (xfill === undefined) xfill = 1;
-            let xexpand = attributes.xexpand;
-            if (xexpand === undefined) xexpand = 1;
+
             let row = this.row();
-            if (this.col > 0) {
-                let len = 0;
-                row.children().map(function(i, e) {
-                    len += Number(jQuery(e).attr('colspan') || 1);
-                });
-                if (len + colspan > this.col) {
-                    this.add_row();
-                    row = this.row();
-                }
-            }
-            let el;
-            if (widget) {
-                el = widget.el;
-            }
-            let cell = jQuery('<div/>', {
-                'colspan': colspan,
-                'class': widget ? widget.class_ || '' : ''
-            }).append(el);
+            let el = widget ? widget.el : undefined;
+            let cell = jQuery('<div/>').append(el);
             row.append(cell);
 
             if (!widget) {
                 return;
-            }
-
-            if (attributes.yexpand) {
-                cell.css('height', '100%');
-            }
-
-            if (attributes.xalign !== undefined) {
-                let xalign;
-                if (attributes.xalign == 0.5) {
-                    if (xexpand) {
-                        xalign = 'start';
-                    } else {
-                        xalign = 'center';
-                    }
-                } else {
-                    xalign = attributes.xalign <= 0.5 ? 'start' : 'end';
-                }
-                cell.css('text-align', xalign);
-            }
-
-
-            if (attributes.yalign !== undefined) {
-                let yalign;
-                if (attributes.yalign == 0.5) {
-                    yalign = 'middle';
-                } else {
-                    yalign = attributes.yalign <= 0.5 ? 'top' : 'bottom';
-                }
-                cell.css('vertical-align', yalign);
             }
 
             if (attributes.help) {
@@ -2417,7 +2367,7 @@ function eval_pyson(value) {
             this.el = jQuery('<div/>', {
                 'class': this.class_
             });
-            const label = $('<span/>', {
+            const label = $('<label/>', {
                 text: attributes.string
             });
             this.el.append(label);

@@ -3,6 +3,23 @@
 @import "bootstrap";
 @import "bootstrap-rtl";
 @import "sao-variables";
+
+// MIXINS
+
+// BUTTONS FORMS STYLE
+.btn-frm-default(){
+    border: 1px solid;
+    width: 130px;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    
+}
+
+// END MIXINS
+
+
 html[theme="default"] {
     @import "theme";
 }
@@ -430,19 +447,11 @@ img.icon {
     -moz-user-select: none;
     -webkit-user-select: none;
 }
-.btn-default(){
-    border: 1px solid;
-    width: 130px;
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    align-items: center;
-    
-}
+
 .modal-footer{
     display: flex;
     .btn{
-        .btn-default();
+        .btn-frm-default();
     }
 }
 .treeview {
@@ -640,25 +649,33 @@ img.icon {
     height: 100%;
     .form-container{
         display: flex !important;
-        justify-content: flex-start;
+        justify-content: start;
         align-items: center;
         flex-wrap: wrap;
         gap: 1rem;
         height: max-content;
-        &>div>div{
+        div > div:not(.panel, .form-notebook){
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             justify-content:space-around;
-            align-items: initial;
-            span{
-                width: max-content;
+            align-items: center;
+            label{
+                background-color: red;
+                flex-grow: 4;
+                width: 75%;
             }
+        }
+        .input-group{
+            display: flex;
+            flex-direction: row;
+            justify-content:space-around;
+            align-items: center;
         }
         .form-text{
             width: 100%;
         }
         .btn {
-            .btn-default();
+            .btn-frm-default();
         }
     }
     input[type="checkbox"].input-sm{
@@ -1099,3 +1116,8 @@ img.favorite-icon {
 @import "input-icon";
 @import "offcanvas";
 @import (optional) "custom.less";
+
+.input-group-btn .btn{
+    border: none;
+    box-shadow: none;
+}
