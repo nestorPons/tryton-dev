@@ -17,14 +17,10 @@ Template default job Tryton project
 
 `grunt dev`
 
-`source .env.local`
-
-`restart`
-
 ```
-"admin" email for "trytondb": admin
-"admin" password for "trytondb": admin
-"admin" password confirmation: admin
+email for "trytondb": admin
+password for "trytondb": admin
+password confirmation: admin
 ```
 
 `trytond_import_currencies -c trytond.conf -d trytondb`
@@ -33,7 +29,7 @@ Template default job Tryton project
 
 `trytond_import_postal_codes -c trytond.conf -d trytondb es`
 
-`trytond`
+`trytond -c trytond.conf`
 
 
 
